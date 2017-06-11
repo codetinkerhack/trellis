@@ -1,4 +1,4 @@
-
+ 
 Trellis();
 
 // The $fn parameter will influence all objects inside this module
@@ -18,7 +18,8 @@ module Trellis($fn=100) {
 
     difference() {
     Top((x+1)*(buttonSpace+buttonSize/8), (y+1)*(buttonSpace+buttonSize/8));
-        
+    
+    // buttons matrix    
     for (i =[1:x]) {
         for (t =[1:y]) {
             translate([i*(buttonSpace+buttonSize/8), t*(buttonSpace+buttonSize/8), -.9]) 
@@ -42,8 +43,10 @@ module Button(size=10, d) {
 
 module Top(sizex, sizey ) {
     difference() {
-        cube([sizex,sizey,2]);
-        translate([1,1 , 1]) 
-        cube([sizex-2,sizey-2,2]);
+        minkowski() {
+            cube([sizex,sizey,2]);
+            sphere(.5);
+        }
+        translate([1,1 , 1]) cube([sizex-2,sizey-2,2]);
     }
 }
