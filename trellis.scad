@@ -17,26 +17,38 @@ module Trellis($fn=100) {
     y=4;
 
     difference() {
-    Top((x+1)*(buttonSpace+buttonSize/8), (y+1)*(buttonSpace+buttonSize/8));
+    Top((x+1)*(buttonSpace+buttonSize), (y+1)*(buttonSpace+buttonSize));
     
-    // buttons matrix    
+    // buttons placeholder matrix    
     for (i =[1:x]) {
         for (t =[1:y]) {
-            translate([i*(buttonSpace+buttonSize/8), t*(buttonSpace+buttonSize/8), -.9]) 
-            Button(buttonSize, buttonSize/16);
+            translate([i*(buttonSpace+buttonSize), t*(buttonSpace+buttonSize), -.9]) 
+            Button(buttonSize, buttonSize/8);
         }
     } 
 
     }
+   
+    // buttons matrix
+//    color("Aqua", 1.0) {
+    
+//        for (i =[1:x]) {
+//            for (t =[1:y]) {
+//                translate([i*(buttonSpace+buttonSize/8), t*(buttonSpace+buttonSize/8), -.9]) 
+//                Button(buttonSize, buttonSize/16);
+//            }
+//        } 
+//    }
 }
 
-module Button(size=10, d) {
+module Button(size, radius) {
     
+    offset = (size/2-radius);
         hull() {
-            translate([-size/8, -size/8 , 0]) cylinder(r=d, h=2);
-            translate([size/8, -size/8 , 0]) cylinder(r=d, h=2);
-            translate([-size/8, size/8 , 0]) cylinder(r=d, h=2);
-            translate([size/8, size/8 , 0]) cylinder(r=d, h=2); 
+            translate([-offset, -offset , 0]) cylinder(r=radius, h=2);
+            translate([offset, -offset , 0]) cylinder(r=radius, h=2);
+            translate([-offset, offset , 0]) cylinder(r=radius, h=2);
+            translate([offset, offset , 0]) cylinder(r=radius, h=2); 
        }
 
 }
