@@ -13,11 +13,11 @@ module Trellis($fn=100) {
     coverHeight = 1;
     topHeight = 1;
     
-    x=4;
+    x=8;
     y=4;
 
     difference() {
-    Top((x+1)*(buttonSpace+buttonSize), (y+1)*(buttonSpace+buttonSize));
+    Top((x+1)*(buttonSpace+buttonSize), (y+1)*(buttonSpace+buttonSize), borderWidth, coverHeight);
     
     // buttons placeholder matrix    
     for (i =[1:x]) {
@@ -53,12 +53,12 @@ module Button(size, radius) {
 
 }
 
-module Top(sizex, sizey ) {
+module Top(sizex, sizey, border, height, thikness ) {
     difference() {
         minkowski() {
             cube([sizex,sizey,2]);
-            sphere(.5);
+            translate([0,0,-2]) sphere(r=1);
         }
-        translate([1,1 , 1]) cube([sizex-2,sizey-2,2]);
+        translate([0,0 , thikness]) cube([sizex-border,sizey-border,height-thikness]);
     }
 }
