@@ -8,24 +8,26 @@ module Trellis($fn=100) {
     buttonSize = 11;
     buttonSpace = 4;
     spaceToBorder = 7;
-    borderWidth = 1.5;
+    borderWidth = 3;
     coverToEdge = 1;
-    coverHeight = 1;
+    height = 10;
+    coverHeight = 6;
     topHeight = 1;
+    buttonHeight = 10;
     
-    x=8;
+    x=4;
     y=4;
 
     difference() {
-    Top((x+1)*(buttonSpace+buttonSize), (y+1)*(buttonSpace+buttonSize), borderWidth, coverHeight);
-    
-    // buttons placeholder matrix    
-    for (i =[1:x]) {
-        for (t =[1:y]) {
-            translate([i*(buttonSpace+buttonSize), t*(buttonSpace+buttonSize), -.9]) 
-            Button(buttonSize, buttonSize/8);
-        }
-    } 
+        Top((x+1)*(buttonSpace+buttonSize), (y+1)*(buttonSpace+buttonSize), borderWidth, height, coverHeight);
+        
+        // buttons placeholder matrix    
+        for (i =[1:x]) {
+            for (t =[1:y]) {
+                translate([i*(buttonSpace+buttonSize), t*(buttonSpace+buttonSize), -coverHeight]) 
+                Button(buttonSize, buttonSize/8, buttonHeight);
+            }
+        } 
 
     }
    
@@ -34,31 +36,45 @@ module Trellis($fn=100) {
     
 //        for (i =[1:x]) {
 //            for (t =[1:y]) {
-//                translate([i*(buttonSpace+buttonSize/8), t*(buttonSpace+buttonSize/8), -.9]) 
-//                Button(buttonSize, buttonSize/16);
+//               translate([i*(buttonSpace+buttonSize), t*(buttonSpace+buttonSize), -coverHeight]) 
+//                Button(buttonSize, buttonSize/8, buttonHeight);
+            
 //            }
 //        } 
 //    }
 }
 
-module Button(size, radius) {
+module Button(size, radius, height) {
     
     offset = (size/2-radius);
         hull() {
-            translate([-offset, -offset , 0]) cylinder(r=radius, h=2);
-            translate([offset, -offset , 0]) cylinder(r=radius, h=2);
-            translate([-offset, offset , 0]) cylinder(r=radius, h=2);
-            translate([offset, offset , 0]) cylinder(r=radius, h=2); 
+            translate([-offset, -offset , 0]) cylinder(r=radius, h=height);
+            translate([offset, -offset , 0]) cylinder(r=radius, h=height);
+            translate([-offset, offset , 0]) cylinder(r=radius, h=height);
+            translate([offset, offset , 0]) cylinder(r=radius, h=height); 
        }
 
 }
 
-module Top(sizex, sizey, border, height, thikness ) {
+module Top(sizex, sizey, borderWidth, height, coverHeight ) {
+    radius = height/2;
+    offsetx = (sizex-radius);
+    offsety = (sizey-radius);
+
     difference() {
-        minkowski() {
-            cube([sizex,sizey,2]);
-            translate([0,0,-2]) sphere(r=1);
+        
+      
+        
+        hull() {
+            translate([radius, radius , -radius]) sphere(r=radius);
+            translate([radius, offsety , -radius]) sphere(r=radius);
+            translate([offsetx, radius , -radius]) sphere(r=radius);
+            translate([offsetx, offsety , -radius]) sphere(r=radius);
         }
-        translate([0,0 , thikness]) cube([sizex-border,sizey-border,height-thikness]);
+        
+         translate([0, 0, -height*1.5]) cube([sizex,sizey,height]);
+         translate([borderWidth, borderWidth, -height*1.5+coverHeight]) cube([sizex-borderWidth*2,sizey-borderWidth*2,coverHeight]);
+        
+        
     }
 }
