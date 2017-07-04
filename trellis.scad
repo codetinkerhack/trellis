@@ -8,15 +8,16 @@ module Trellis($fn=100) {
     buttonSize = 11;
     buttonSpace = 4;
     spaceToBorder = 7;
-    borderWidth = 3;
+    borderWidth = 5.5;
     coverToEdge = 1;
     height = 10;
     coverHeight = 6;
     topHeight = 1;
     buttonHeight = 10;
+    space = 2;
     
     x=4;
-    y=4;
+    y=8;
 
     difference() {
         Top((x+1)*(buttonSpace+buttonSize), (y+1)*(buttonSpace+buttonSize), borderWidth, height, coverHeight);
@@ -30,6 +31,8 @@ module Trellis($fn=100) {
         } 
 
     }
+     translate([(x+1)*(buttonSpace+buttonSize)+space,0 , 0])
+     Top((x+1)*(buttonSpace+buttonSize), (y+1)*(buttonSpace+buttonSize), borderWidth, height, coverHeight);
    
     // buttons matrix
 //    color("Aqua", 1.0) {
