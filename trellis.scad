@@ -7,12 +7,9 @@ module Trellis($fn=100) {
     // Temporary variables
     buttonSize = 11;
     buttonSpace = 4;
-    spaceToBorder = 7;
-    borderWidth = 5.5;
-    coverToEdge = 1;
-    height = 10;
-    coverHeight = 6;
-    topHeight = 1;
+    borderWidth = 6;
+    height = 13;
+    coverHeight = 8;
     buttonHeight = 10;
     space = 2;
     
