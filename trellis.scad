@@ -7,43 +7,44 @@ module Trellis($fn=100) {
     // Temporary variables
     buttonSize = 11;
     buttonSpace = 4;
-    borderWidth = 4;
-    height = 13;
-    coverHeight = 8;
+    borderWidthX = 2;
+    borderWidthY = 4;
+    height = 11;
+    thickness = 5;
     buttonHeight = 10;
-    space = 2;
+    space = 15;
     
     x=4;
     y=8;
 
-    offsetx=borderWidth+buttonSize;
+
     difference() {
         
-        Top(offsetx + x*(buttonSpace+buttonSize), offsetx + y*(buttonSpace+buttonSize), borderWidth, height, coverHeight);
+        Top(buttonSize - buttonSpace + x*(buttonSpace+buttonSize), buttonSize - buttonSpace + y*(buttonSpace+buttonSize), borderWidthX, borderWidthY, height, thickness);
         
         // buttons placeholder matrix    
         for (i =[0:x-1]) {
             for (t =[0:y-1]) {
-                translate([offsetx + i*(buttonSize+buttonSpace), offsetx + t*(buttonSpace+buttonSize), -coverHeight]) 
-                Button(buttonSize, buttonSize/8, buttonHeight);
+                translate([buttonSize + i*(buttonSize+buttonSpace), buttonSize+t*(buttonSpace+buttonSize), height-thickness-.2]) 
+                Button(buttonSize, buttonSize/8, thickness+2);
             }
         } 
 
     }
-     translate([offsetx + x *(buttonSpace+buttonSize)+space,0 , 0])
-     Top(offsetx + x *(buttonSpace+buttonSize), offsetx + y*(buttonSpace+buttonSize), borderWidth, height, coverHeight);
+    
+//   translate([x *(buttonSpace+buttonSize)+space,0 , 0])
+//    Top(buttonSize - buttonSpace + x*(buttonSpace+buttonSize), buttonSize - buttonSpace + y*(buttonSpace+buttonSize), borderWidthX, borderWidthY, height, thickness);
    
     // buttons matrix
 //    color("Aqua", 1.0) {
     
-//        for (i =[1:x]) {
-//            for (t =[1:y]) {
-//               translate([i*(buttonSpace+buttonSize), t*(buttonSpace+buttonSize), -coverHeight]) 
-//                Button(buttonSize, buttonSize/8, buttonHeight);
-            
+//       for (i =[0:x-1]) {
+//            for (t =[0:y-1]) {
+//                translate([buttonSize + i*(buttonSize+buttonSpace), buttonSize+t*(buttonSpace+buttonSize), height-thickness-.2]) 
+//                Button(buttonSize, buttonSize/8, thickness+2);
 //            }
-//        } 
-//    }
+//        }
+//    } 
 }
 
 module Button(size, radius, height) {
@@ -58,24 +59,29 @@ module Button(size, radius, height) {
 
 }
 
-module Top(sizex, sizey, borderWidth, height, coverHeight ) {
-    radius = height/2;
-    offsetx = (sizex-radius);
-    offsety = (sizey-radius);
+module Top(sizex, sizey, borderWidthX, borderWidthY, height, thickness ) {
+
+    radius = thickness/2;
+    offsetx = (sizex)+borderWidthX;
+    offsety = (sizey)+borderWidthY;
+
 
     difference() {
         
-        hull() {
-            translate([radius, radius , -radius]) sphere(r=radius);
-           translate([radius, offsety , -radius]) sphere(r=radius);
-            translate([offsetx, radius , -radius]) sphere(r=radius);
-            translate([offsetx, offsety , -radius]) sphere(r=radius);
-        }
-        //translate([-2, -2, 0]) cube([sizex-(borderWidth+4)*2,sizey-(borderWidth+4)*2,coverHeight]);
         
-         translate([0, 0, -height*1.5]) cube([sizex,sizey,height]);
-         translate([borderWidth, borderWidth, -height*1.5+coverHeight]) cube([sizex-borderWidth*2,sizey-borderWidth*2,coverHeight]);
+         translate([-borderWidthX, -borderWidthY, 0]) cube([sizex+(2*borderWidthX),sizey+(2*borderWidthY),height]);
         
-        
-    }
+         translate([0, 0, -.1]) cube([sizex,sizey,height-thickness]);
+    
+    
+       hull() {
+            translate([-borderWidthX, -borderWidthY , height-radius+.1]) cylinder(h=radius, r1=0, r2=radius);
+            translate([-borderWidthX, offsety , height-radius+.1]) cylinder(h=radius, r1=0, r2=radius);
+       }
+       hull() {
+            translate([offsetx, -borderWidthY , height-radius+.1]) cylinder(h=radius, r1=0, r2=radius);
+            translate([offsetx, offsety , height-radius+.1]) cylinder(h=radius, r1=0, r2=radius);
+       }
+   }    
+    
 }
